@@ -57,7 +57,7 @@ http://www.mulesoft.org/schema/mule/mock http://www.mulesoft.org/schema/mule/moc
             </mock:with-attributes>
             <mock:then-return payload="1"/>
         </mock:when>
-        <set-payload value="#[dw(getResource('scaffolder/request/post_customerdetails_application_json.json').asString(),&quot;application/java&quot;)]" doc:name="Set Payload"/>
+        <set-payload value="#[dw(getResource('setPayload/post_customerdetails_application_json.json').asString(),&quot;application/java&quot;)]" doc:name="Set Payload"/>
         <flow-ref name="post:/customerDetails:application/json:customer-details-api-config" doc:name="post:/customerDetails:application/json:customer-details-api-config"/>
         <munit:assert-on-equals message="FAILED: Expected 201, instead found #[message.outboundProperties.'http.status']!" expectedValue="#['201']" actualValue="#[message.outboundProperties.'http.status']" doc:name="Assert Equals: Check Http.Status is 201"/>
     </munit:test>
@@ -68,7 +68,7 @@ http://www.mulesoft.org/schema/mule/mock http://www.mulesoft.org/schema/mule/moc
             </mock:with-attributes>
             <mock:then-return payload="1"/>
         </mock:when>
-        <set-payload value="#[dw(getResource('scaffolder/request/put_customerdetails_{id}_application_json.json').asString(),&quot;application/java&quot;)]" doc:name="Set Payload"/>
+        <set-payload value="#[dw(getResource('setPayload/put_customerdetails_{id}_application_json.json').asString(),&quot;application/java&quot;)]" doc:name="Set Payload"/>
         <flow-ref name="put:/customerDetails/{ID}:application/json:customer-details-api-config" doc:name="put:/customerDetails/{ID}:application/json:customer-details-api-config"/>
         <munit:assert-on-equals message="FAILED: Expected 200, instead found #[message.outboundProperties.'http.status']!" expectedValue="#['200']" actualValue="#[message.outboundProperties.'http.status']" doc:name="Assert Equals: Check Http.Status is 200"/>
     </munit:test>
@@ -79,7 +79,7 @@ http://www.mulesoft.org/schema/mule/mock http://www.mulesoft.org/schema/mule/moc
             </mock:with-attributes>
             <mock:then-return payload="0"/>
         </mock:when>
-        <set-payload value="#[dw(getResource('scaffolder/request/put_customerdetails_{id}_application_json.json').asString(),&quot;application/java&quot;)]" doc:name="Set Payload"/>
+        <set-payload value="#[dw(getResource('setPayload/put_customerdetails_{id}_application_json.json').asString(),&quot;application/java&quot;)]" doc:name="Set Payload"/>
         <flow-ref name="get:/customerDetails:customer-details-api-config" doc:name="put:/customerDetails/{ID}:application/json:customer-details-api-config"/>
         <munit:assert-on-equals message="FAILED: Expected 404, instead found #[message.outboundProperties.'http.status']!" expectedValue="#['404']" actualValue="#[message.outboundProperties.'http.status']" doc:name="Assert Equals: Check Http.Status is 404"/>
     </munit:test>
