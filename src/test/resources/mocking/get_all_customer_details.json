@@ -1,0 +1,18 @@
+[
+{
+"CUSTID" : 1,
+"CUSTNAME" : "Touseef",
+"MOBILE" : "9985100350",
+"ADDRESS" : "Hyderabad",
+"GENDER" : "Male",
+"BIRTHDATE" : "1988-01-19"
+},
+{
+"CUSTID" : 2,
+"CUSTNAME" : "Raghu",
+"MOBILE" : "9985123543",
+"ADDRESS" : "Bangalore",
+"GENDER" : "Male",
+"BIRTHDATE" : "1984-05-24"
+}
+]

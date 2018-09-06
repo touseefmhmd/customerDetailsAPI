@@ -1,0 +1,57 @@
+#%RAML 1.0
+baseUri: https://mocksvc.mulesoft.com/mocks/3943c64c-73a9-4622-8b9f-a12100884565 # 
+version: v1
+title: MuleUsecase
+types:
+  CustomerDetails: !include exchange_modules/b7682a68-b8d4-471c-8436-bf1145648330/customerdetailsdatatype/1.0.1/customerdetailsdatatype.raml
+
+/customerDetails:
+
+  get:
+    responses: 
+      200:
+        body: 
+          application/json:
+            type: CustomerDetails[]
+            example: !include exchange_modules/b7682a68-b8d4-471c-8436-bf1145648330/customerdetailsexample/1.0.5/customerdetailsexample.raml
+
+  post:
+    body: 
+      application/json:
+        type: CustomerDetails
+        example: !include exchange_modules/b7682a68-b8d4-471c-8436-bf1145648330/customerdetailexample/1.0.0/customerdetailexample.raml
+    responses: 
+      201:
+        body: 
+          application/json:
+            example:
+              message: Customer Added
+
+  /{ID}:
+    get:
+      responses: 
+        200:
+          body: 
+            application/json:
+              type: CustomerDetails
+              example: !include exchange_modules/b7682a68-b8d4-471c-8436-bf1145648330/customerdetailnoidexample/1.0.0/customerdetailnoidexample.raml
+
+    delete:
+      responses:
+        200:
+          body:
+            application/json:
+              example:
+                message: Customer deleted
+
+    put:
+      body:
+        application/json:
+          type: CustomerDetails
+          example: !include exchange_modules/b7682a68-b8d4-471c-8436-bf1145648330/customerdetailnoidexample/1.0.0/customerdetailnoidexample.raml
+      responses:
+        200:
+          body:
+            application/json:
+              example:
+                message: Customer updated

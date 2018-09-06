@@ -1,0 +1,18 @@
+[
+{
+"custID" : 1,
+"custName" : "Touseef",
+"mobile" : "9985100350",
+"address" : "Hyderabad",
+"gender" : "Male",
+"birthDate" : "1988-01-19"
+},
+{
+"custID" : 2,
+"custName" : "Raghu",
+"mobile" : "9985123543",
+"address" : "Bangalore",
+"gender" : "Male",
+"birthDate" : "1984-05-24"
+}
+]
