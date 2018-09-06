@@ -6,52 +6,51 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/mock http://www.mulesoft.org/schema/mule/mock/current/mule-mock.xsd">
     <spring:beans>
-        <spring:import resource="classpath:muleusecase.xml"/>
-        <spring:import resource="classpath:invokeEndpoints.xml"/>
+        <spring:import resource="classpath:customer-details-api.xml"/>
+        <spring:import resource="classpath:implementation.xml"/>
     </spring:beans>
     <munit:config mock-connectors="false" mock-inbounds="false" doc:name="MUnit configuration"/>
-    <http:request-config name="HTTP_Request_Configuration" host="localhost" port="8081" basePath="/api" doc:name="HTTP Request Configuration"/>
-    <munit:test name="muleusecase-test-suite-getAllCustomerTest" description="Verifying functionality of [get:/customerDetails:muleusecase-config-200-application/json]">
+    <munit:test name="customer-details-api-test-suite-getAllCustomerTest" description="Verifying functionality of [get:/customerDetails:customer-details-api-config-200-application/json]">
         <mock:when messageProcessor=".*:.*" doc:name="Mock: DB-Get All Customers">
             <mock:with-attributes>
                 <mock:with-attribute name="doc:name" whereValue="#['Database: Get all Customer']"/>
             </mock:with-attributes>
             <mock:then-return payload="#[dw(getResource('mocking/get_all_customer_details.json').asString(),&quot;application/java&quot;)]"/>
         </mock:when>
-        <flow-ref name="get:/customerDetails:muleusecase-config" doc:name="Flow Ref: Get All Customers"/>
+        <flow-ref name="get:/customerDetails:customer-details-api-config" doc:name="get:/customerDetails:customer-details-api-config"/>
         <munit:assert-on-equals message="FAILED: Expected 200, instead found #[message.outboundProperties.'http.status']!" expectedValue="#['200']" actualValue="#[message.outboundProperties.'http.status']" doc:name="Assert Equals: Check Http.Status is 200"/>
     </munit:test>
-    <munit:test name="muleusecase-test-suite-getAllCustomer404Test" description="Test">
+    <munit:test name="customer-details-api-test-suite-getAllCustomer404Test" description="Test">
         <mock:when messageProcessor=".*:.*" doc:name="Mock: DB-Get All Customers">
             <mock:with-attributes>
                 <mock:with-attribute name="doc:name" whereValue="#['Database: Get all Customer']"/>
             </mock:with-attributes>
             <mock:then-return payload="#[[]]"/>
         </mock:when>
-        <flow-ref name="get:/customerDetails:muleusecase-config" doc:name="Flow Ref: Get All Customers"/>
+        <flow-ref name="get:/customerDetails:customer-details-api-config" doc:name="get:/customerDetails:customer-details-api-config"/>
         <munit:assert-on-equals message="FAILED: Expected 404, instead found #[message.outboundProperties.'http.status']!" expectedValue="#['404']" actualValue="#[message.outboundProperties.'http.status']" doc:name="Assert Equals: Check Http.Status is 404"/>
     </munit:test>
-    <munit:test name="muleusecase-test-suite-getCustomerByIDTest" description="Test">
+    <munit:test name="customer-details-api-test-suite-getCustomerByIDTest" description="Test">
         <mock:when messageProcessor=".*:.*" doc:name="DB-Get CustomersByID">
             <mock:with-attributes>
                 <mock:with-attribute name="doc:name" whereValue="#['Database: Get By CustID']"/>
             </mock:with-attributes>
             <mock:then-return payload="#[dw(getResource('mocking/get_customer_by_id.json').asString(),&quot;application/java&quot;)]"/>
         </mock:when>
-        <flow-ref name="get:/customerDetails/{ID}:muleusecase-config" doc:name="Flow Ref: Get CustomerByID"/>
+        <flow-ref name="get:/customerDetails/{ID}:customer-details-api-config" doc:name="get:/customerDetails/{ID}:customer-details-api-config"/>
         <munit:assert-on-equals message="FAILED: Expected 200, instead found #[message.outboundProperties.'http.status']!" expectedValue="#['200']" actualValue="#[message.outboundProperties.'http.status']" doc:name="Assert Equals: Check Http.Status is 200"/>
     </munit:test>
-    <munit:test name="muleusecase-test-suite-getCustomerByID404Test" description="Test">
+    <munit:test name="customer-details-api-test-suite-getCustomerByID404Test" description="Test">
         <mock:when messageProcessor=".*:.*" doc:name="DB-Get CustomersByID">
             <mock:with-attributes>
                 <mock:with-attribute name="doc:name" whereValue="#['Database: Get By CustID']"/>
             </mock:with-attributes>
             <mock:then-return payload="#[[]]"/>
         </mock:when>
-        <flow-ref name="get:/customerDetails/{ID}:muleusecase-config" doc:name="Flow Ref: Get CustomerByID"/>
+        <flow-ref name="get:/customerDetails/{ID}:customer-details-api-config" doc:name="get:/customerDetails/{ID}:customer-details-api-config"/>
         <munit:assert-on-equals message="FAILED: Expected 404, instead found #[message.outboundProperties.'http.status']!" expectedValue="#['404']" actualValue="#[message.outboundProperties.'http.status']" doc:name="Assert Equals: Check Http.Status is 404"/>
     </munit:test>
-    <munit:test name="muleusecase-test-suite-postCustomerDetailsTest" description="Test">
+    <munit:test name="customer-details-api-test-suite-postCustomerDetailsTest" description="Test">
         <mock:when messageProcessor=".*:.*" doc:name="Mock">
             <mock:with-attributes>
                 <mock:with-attribute name="doc:name" whereValue="#['Database']"/>
@@ -59,10 +58,10 @@ http://www.mulesoft.org/schema/mule/mock http://www.mulesoft.org/schema/mule/moc
             <mock:then-return payload="1"/>
         </mock:when>
         <set-payload value="#[dw(getResource('scaffolder/request/post_customerdetails_application_json.json').asString(),&quot;application/java&quot;)]" doc:name="Set Payload"/>
-        <flow-ref name="post:/customerDetails:application/json:muleusecase-config" doc:name="Flow Ref: Post Customer Details"/>
+        <flow-ref name="post:/customerDetails:application/json:customer-details-api-config" doc:name="post:/customerDetails:application/json:customer-details-api-config"/>
         <munit:assert-on-equals message="FAILED: Expected 201, instead found #[message.outboundProperties.'http.status']!" expectedValue="#['201']" actualValue="#[message.outboundProperties.'http.status']" doc:name="Assert Equals: Check Http.Status is 201"/>
     </munit:test>
-    <munit:test name="muleusecase-test-suite-putCustomerDetailsTest" description="Test">
+    <munit:test name="customer-details-api-test-suite-putCustomerDetailsTest" description="Test">
         <mock:when messageProcessor=".*:.*" doc:name="Mock">
             <mock:with-attributes>
                 <mock:with-attribute name="doc:name" whereValue="#['Database: Update By Customer ID']"/>
@@ -70,10 +69,10 @@ http://www.mulesoft.org/schema/mule/mock http://www.mulesoft.org/schema/mule/moc
             <mock:then-return payload="1"/>
         </mock:when>
         <set-payload value="#[dw(getResource('scaffolder/request/put_customerdetails_{id}_application_json.json').asString(),&quot;application/java&quot;)]" doc:name="Set Payload"/>
-        <flow-ref name="put:/customerDetails/{ID}:application/json:muleusecase-config" doc:name="Flow Ref: Put Customer Details"/>
+        <flow-ref name="put:/customerDetails/{ID}:application/json:customer-details-api-config" doc:name="put:/customerDetails/{ID}:application/json:customer-details-api-config"/>
         <munit:assert-on-equals message="FAILED: Expected 200, instead found #[message.outboundProperties.'http.status']!" expectedValue="#['200']" actualValue="#[message.outboundProperties.'http.status']" doc:name="Assert Equals: Check Http.Status is 200"/>
     </munit:test>
-    <munit:test name="muleusecase-test-suite-putCustomerDetails404Test" description="Test">
+    <munit:test name="customer-details-api-test-suite-putCustomerDetails404Test" description="Test">
         <mock:when messageProcessor=".*:.*" doc:name="Mock">
             <mock:with-attributes>
                 <mock:with-attribute name="doc:name" whereValue="#['Database: Update By Customer ID']"/>
@@ -81,27 +80,27 @@ http://www.mulesoft.org/schema/mule/mock http://www.mulesoft.org/schema/mule/moc
             <mock:then-return payload="0"/>
         </mock:when>
         <set-payload value="#[dw(getResource('scaffolder/request/put_customerdetails_{id}_application_json.json').asString(),&quot;application/java&quot;)]" doc:name="Set Payload"/>
-        <flow-ref name="put:/customerDetails/{ID}:application/json:muleusecase-config" doc:name="Flow Ref: Put Customer Details"/>
+        <flow-ref name="get:/customerDetails:customer-details-api-config" doc:name="put:/customerDetails/{ID}:application/json:customer-details-api-config"/>
         <munit:assert-on-equals message="FAILED: Expected 404, instead found #[message.outboundProperties.'http.status']!" expectedValue="#['404']" actualValue="#[message.outboundProperties.'http.status']" doc:name="Assert Equals: Check Http.Status is 404"/>
     </munit:test>
-    <munit:test name="muleusecase-test-suite-deleteCustomerDetailsTest" description="Test">
+    <munit:test name="customer-details-api-test-suite-deleteCustomerDetailsTest" description="Test">
         <mock:when messageProcessor=".*:.*" doc:name="Mock">
             <mock:with-attributes>
                 <mock:with-attribute name="doc:name" whereValue="#['Database: Delete By Customer ID']"/>
             </mock:with-attributes>
             <mock:then-return payload="1"/>
         </mock:when>
-        <flow-ref name="delete:/customerDetails/{ID}:muleusecase-config" doc:name="Flow Ref: Put Customer Details"/>
+        <flow-ref name="delete:/customerDetails/{ID}:customer-details-api-config" doc:name="delete:/customerDetails/{ID}:customer-details-api-config"/>
         <munit:assert-on-equals message="FAILED: Expected 200, instead found #[message.outboundProperties.'http.status']!" expectedValue="#['200']" actualValue="#[message.outboundProperties.'http.status']" doc:name="Assert Equals: Check Http.Status is 200"/>
     </munit:test>
-    <munit:test name="muleusecase-test-suite-deleteCustomerDetails404Test" description="Test">
+    <munit:test name="customer-details-api-test-suite-deleteCustomerDetails404Test" description="Test">
         <mock:when messageProcessor=".*:.*" doc:name="Mock">
             <mock:with-attributes>
                 <mock:with-attribute name="doc:name" whereValue="#['Database: Delete By Customer ID']"/>
             </mock:with-attributes>
             <mock:then-return payload="0"/>
         </mock:when>
-        <flow-ref name="delete:/customerDetails/{ID}:muleusecase-config" doc:name="Flow Ref: Put Customer Details"/>
+        <flow-ref name="delete:/customerDetails/{ID}:customer-details-api-config" doc:name="delete:/customerDetails/{ID}:customer-details-api-config"/>
         <munit:assert-on-equals message="FAILED: Expected 404, instead found #[message.outboundProperties.'http.status']!" expectedValue="#['404']" actualValue="#[message.outboundProperties.'http.status']" doc:name="Assert Equals: Check Http.Status is 404"/>
     </munit:test>
 </mule>

@@ -7,44 +7,44 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
 http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
 http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd">
-    <http:listener-config name="muleusecase-httpListenerConfig" host="0.0.0.0" port="8081" doc:name="HTTP Listener Configuration"/>
-    <apikit:config name="muleusecase-config" raml="muleusecase.raml" consoleEnabled="false" doc:name="Router"/>
+    <http:listener-config name="customer-details-api-httpListenerConfig" host="0.0.0.0" port="${http.port}" doc:name="HTTP Listener Configuration"/>
+    <apikit:config name="customer-details-api-config" raml="customer-details-api.raml" consoleEnabled="false" doc:name="Router" keepRamlBaseUri="false"/>
     <db:oracle-config name="Oracle_Configuration" host="localhost" port="1521" instance="orcl" user="touseef" password="touseef" doc:name="Oracle Configuration"/>
-    <flow name="get:/customerDetails:muleusecase-config">
+    <flow name="get:/customerDetails:customer-details-api-config">
         <logger message="&quot;Received request for querying Customer Details&quot;" level="INFO" doc:name="Logger"/>
         <flow-ref name="getAllCustomerDetails" doc:name="Flow Ref: Get All Customer Details"/>
 
     </flow>
-    <flow name="get:/customerDetails/{ID}:muleusecase-config">
+    <flow name="get:/customerDetails/{ID}:customer-details-api-config">
         <logger message="&quot;Received request to query Customer Details for ID &quot;+#[flowVars.ID]" level="INFO" doc:name="Logger"/>
         <flow-ref name="getCustomerByID" doc:name="Flow Ref: Get Customer By ID"/>
 
     </flow>
-    <flow name="post:/customerDetails:application/json:muleusecase-config">
+    <flow name="post:/customerDetails:application/json:customer-details-api-config">
         <logger message="&quot;Received request to Add Customer Details for Customer ID: &quot;+#[payload]" level="INFO" doc:name="Logger"/>
-        <flow-ref name="postCustomerDetails" doc:name="Flow Ref: Create Customer"/>
+        <flow-ref name="postCustomerDetails" doc:name="Flow Ref: Post Customer Details"/>
 
     </flow>
-    <flow name="put:/customerDetails/{ID}:application/json:muleusecase-config">
+    <flow name="put:/customerDetails/{ID}:application/json:customer-details-api-config">
         <logger message="&quot;Received request to update Customer details for customer ID :&quot;+#[flowVars.ID]" level="INFO" doc:name="Logger"/>
         <flow-ref name="updateCustomerDetailsByID" doc:name="Flow Ref: Update Customer By ID"/>
 
     </flow>
-    <flow name="delete:/customerDetails/{ID}:muleusecase-config">
+    <flow name="delete:/customerDetails/{ID}:customer-details-api-config">
         <logger message="&quot;Received request to delete Customer details with customer ID :&quot;+#[flowVars.ID]" level="INFO" doc:name="Logger"/>
         <flow-ref name="deleteCustomerByID" doc:name="Flow Ref: Delete Customer By ID"/>
 
     </flow>
-    <flow name="muleusecase-main">
-        <http:listener config-ref="muleusecase-httpListenerConfig" path="/api/*" doc:name="HTTP"/>
-        <apikit:router config-ref="muleusecase-config" doc:name="APIkit Router"/>
-        <exception-strategy ref="muleusecase-apiKitGlobalExceptionMapping" doc:name="Reference Exception Strategy"/>
+    <flow name="customer-details-api-main">
+        <http:listener config-ref="customer-details-api-httpListenerConfig" path="/api/*" doc:name="HTTP"/>
+        <apikit:router config-ref="customer-details-api-config" doc:name="APIkit Router"/>
+        <exception-strategy ref="customer-details-apiapiKitGlobalExceptionMapping" doc:name="Reference Exception Strategy"/>
     </flow>
-    <flow name="muleusecase-console">
-        <http:listener config-ref="muleusecase-httpListenerConfig" path="/console/*" doc:name="HTTP"/>
-        <apikit:console config-ref="muleusecase-config" doc:name="APIkit Console"/>
+    <flow name="customer-details-api-console">
+        <http:listener config-ref="customer-details-api-httpListenerConfig" path="/console/*" doc:name="HTTP"/>
+        <apikit:console config-ref="customer-details-api-config" doc:name="APIkit Console"/>
     </flow>
-    <apikit:mapping-exception-strategy name="muleusecase-apiKitGlobalExceptionMapping">
+    <apikit:mapping-exception-strategy name="customer-details-apiapiKitGlobalExceptionMapping">
         <apikit:mapping statusCode="404">
             <apikit:exception value="org.mule.module.apikit.exception.NotFoundException" />
             <set-property propertyName="Content-Type" value="application/json" doc:name="Property"/>
