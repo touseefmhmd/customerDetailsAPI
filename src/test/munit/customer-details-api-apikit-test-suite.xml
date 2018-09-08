@@ -80,7 +80,7 @@ http://www.mulesoft.org/schema/mule/mock http://www.mulesoft.org/schema/mule/moc
             <mock:then-return payload="0"/>
         </mock:when>
         <set-payload value="#[dw(getResource('setPayload/put_customerdetails_{id}_application_json.json').asString(),&quot;application/java&quot;)]" doc:name="Set Payload"/>
-        <flow-ref name="get:/customerDetails:customer-details-api-config" doc:name="put:/customerDetails/{ID}:application/json:customer-details-api-config"/>
+        <flow-ref name="put:/customerDetails/{ID}:application/json:customer-details-api-config" doc:name="put:/customerDetails/{ID}:application/json:customer-details-api-config"/>
         <munit:assert-on-equals message="FAILED: Expected 404, instead found #[message.outboundProperties.'http.status']!" expectedValue="#['404']" actualValue="#[message.outboundProperties.'http.status']" doc:name="Assert Equals: Check Http.Status is 404"/>
     </munit:test>
     <munit:test name="customer-details-api-test-suite-deleteCustomerDetailsTest" description="Test">
